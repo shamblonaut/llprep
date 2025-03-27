@@ -282,8 +282,8 @@ const App = () => {
                 timeRemaining > 15
                   ? "bg-green-500"
                   : timeRemaining > 7
-                  ? "bg-yellow-500"
-                  : "bg-red-500"
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
               } bg-gray-200 rounded-full transition-all ease-linear duration-1000`}
               style={{
                 width: `${(timeRemaining / 30) * 100}%`,
@@ -310,14 +310,14 @@ const App = () => {
                 className={`flex items-center p-4 rounded-lg transition duration-300 shadow-sm
                                     ${
                                       key === selectedAnswer && timerActive
-                                        ? "border-1 border-gray-600 bg-blue-200 hover:bg-blue-400 text-gray-800"
+                                        ? "border-1 border-gray-600 bg-gray-300 hover:bg-gray-400 text-gray-800"
                                         : timerActive
-                                        ? "border-1 border-gray-600 hover:bg-gray-200 text-gray-800"
-                                        : key === currentQuestion.answer
-                                        ? "bg-green-200 text-green-900"
-                                        : selectedAnswer === key
-                                        ? "bg-red-200 text-red-900"
-                                        : "bg-gray-100 text-gray-800"
+                                          ? "border-1 border-gray-600 hover:bg-gray-200 text-gray-800"
+                                          : key === currentQuestion.answer
+                                            ? "bg-green-200 text-green-900"
+                                            : selectedAnswer === key
+                                              ? "bg-red-200 text-red-900"
+                                              : "bg-gray-100 text-gray-800"
                                     }`}
               >
                 {key}.
