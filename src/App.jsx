@@ -47,7 +47,7 @@ const App = () => {
         setTimeRemaining((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
-            handleAnswerSelect(null);
+            handleAnswerSubmit(null);
             return 0;
           }
           return prev - 1;
@@ -85,7 +85,7 @@ const App = () => {
     setQuizComplete(false);
   };
 
-  const handleAnswerSelect = (optionKey) => {
+  const handleAnswerSubmit = (optionKey) => {
     setSelectedAnswer(optionKey);
     setTimerActive(false);
 
@@ -305,11 +305,13 @@ const App = () => {
             {Object.entries(currentQuestion.options).map(([key, option]) => (
               <button
                 key={key}
-                onClick={() => handleAnswerSelect(key)}
+                onClick={() => setSelectedAnswer(key)}
                 disabled={selectedAnswer !== null}
                 className={`flex items-center p-4 rounded-lg transition duration-300 shadow-sm
                                     ${
-                                      timerActive
+                                      key === selectedAnswer && timerActive
+                                        ? "border-1 border-gray-600 bg-blue-200 hover:bg-blue-400 text-gray-800"
+                                        : timerActive
                                         ? "border-1 border-gray-600 hover:bg-gray-200 text-gray-800"
                                         : key === currentQuestion.answer
                                         ? "bg-green-200 text-green-900"
@@ -330,13 +332,23 @@ const App = () => {
             ))}
           </div>
 
-          {showNextButton && (
+          {showNextButton ? (
             <div className="mt-8 flex justify-center">
               <button
                 onClick={moveToNextQuestion}
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center"
               >
                 Next Question <ArrowRight className="ml-2" />
+              </button>
+            </div>
+          ) : (
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => handleAnswerSubmit(selectedAnswer)}
+                disabled={selectedAnswer === null}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center"
+              >
+                Submit
               </button>
             </div>
           )}
