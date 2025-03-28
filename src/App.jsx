@@ -161,8 +161,8 @@ const App = () => {
 
   const renderLoadingScreen = () => (
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-200 to-blue-600">
-      <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
-        <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+      <h1 className="text-3xl text-white font-bold m-8 text-gray-900 text-center flex items-center justify-center">
+        <img className="mr-2 h-8" src="/car.svg" /> LL Test Prep
       </h1>
       <div className="flex flex-col m-auto text-center items-center">
         <div className="loader"></div>
@@ -175,8 +175,8 @@ const App = () => {
 
   const renderStartScreen = () => (
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-200 to-blue-600">
-      <h1 className="text-3xl font-bold mt-[30vh] text-gray-900 text-center flex items-center justify-center">
-        <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+      <h1 className="text-3xl text-white font-bold mt-[30vh] text-gray-900 text-center flex items-center justify-center">
+        <img className="mr-2 h-8" src="/car.svg" /> LL Test Prep
       </h1>
       <div className="bg-white p-8 mt-[5vh] rounded-xl shadow-2xl max-w-[90vw] border-2 border-gray-200 m-8">
         <div className="space-y-4">
@@ -221,8 +221,8 @@ const App = () => {
     let hasPassed = score >= selectedQuestions.length * 0.6;
     return (
       <div className="flex flex-col items-center min-h-screen pb-8 bg-gradient-to-br from-blue-200 to-blue-600">
-        <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
-          <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+        <h1 className="text-3xl text-white font-bold m-8 text-gray-900 text-center flex items-center justify-center">
+          <img className="mr-2 h-8" src="/car.svg" /> LL Test Prep
         </h1>
         <div className="bg-white p-8 mt-auto mb-auto rounded-xl shadow-2xl text-center max-w-[90vw] border-2 border-gray-200">
           <h2 className="text-3xl font-bold mb-4 text-gray-900 flex items-center justify-center">
@@ -327,8 +327,8 @@ const App = () => {
   const renderConfirmationAbort = () => {
     return (
       <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-200 to-blue-600">
-        <h1 className="text-3xl font-bold mt-[30vh] text-gray-900 text-center flex items-center justify-center">
-          <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+        <h1 className="text-3xl text-white font-bold mt-[30vh] text-gray-900 text-center flex items-center justify-center">
+          <img className="mr-2 h-8" src="/car.svg" /> LL Test Prep
         </h1>
         <div className="bg-white p-8 mt-[5vh] rounded-xl shadow-2xl text-center max-w-[90vw]">
           <h2 className="text-2xl font-bold mb-4 text-red-700">Abort Quiz?</h2>
@@ -360,8 +360,8 @@ const App = () => {
 
     return (
       <div className="flex flex-col items-center min-h-screen pb-8 bg-gradient-to-br from-blue-200 to-blue-600">
-        <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
-          <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+        <h1 className="text-3xl text-white font-bold m-8 text-gray-900 text-center flex items-center justify-center">
+          <img className="mr-2 h-8" src="/car.svg" /> LL Test Prep
         </h1>
         <div className="bg-white p-4 rounded-xl shadow-2xl max-w-[90vw] border-2 border-gray-200">
           <div className="grid grid-cols-3 mb-4">
