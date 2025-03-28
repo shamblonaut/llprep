@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import {
-  Car,
   Shuffle,
   CircleX,
   TrafficCone,
@@ -10,6 +9,8 @@ import {
 } from "lucide-react";
 
 const App = () => {
+  const QUESTION_TIME = 30;
+
   const [isLoading, setIsLoading] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [quizMode, setQuizMode] = useState(null);
@@ -22,7 +23,7 @@ const App = () => {
   const [customQuestionCount, setCustomQuestionCount] = useState(20);
   const [quizComplete, setQuizComplete] = useState(false);
   const [showConfirmAbort, setShowConfirmAbort] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(30);
+  const [timeRemaining, setTimeRemaining] = useState(QUESTION_TIME);
   const [timerActive, setTimerActive] = useState(true);
   const [showNextButton, setShowNextButton] = useState(false);
 
@@ -48,9 +49,9 @@ const App = () => {
         setTimeRemaining((prev) => {
           if (prev <= 1) {
             clearInterval(timer);
-            handleAnswerSubmit(null);
+            handleAnswerSubmit();
             setTimerActive(false);
-            return 30;
+            return QUESTION_TIME;
           }
           return prev - 1;
         });
@@ -68,7 +69,7 @@ const App = () => {
     setShowNextButton(false);
     setQuizInProgress(true);
     setTimerActive(true);
-    setTimeRemaining(30);
+    setTimeRemaining(QUESTION_TIME);
     setQuizComplete(false);
   };
 
@@ -87,27 +88,37 @@ const App = () => {
     setShowNextButton(false);
     setQuizInProgress(true);
     setTimerActive(true);
-    setTimeRemaining(30);
+    setTimeRemaining(QUESTION_TIME);
     setQuizComplete(false);
   };
 
-  const handleAnswerSubmit = (optionKey) => {
-    setSelectedAnswer(optionKey);
+  const handleAnswerSubmit = () => {
     setTimerActive(false);
 
     // Check if answer is correct
     const currentQuestion = selectedQuestions[currentQuestionIndex];
-    if (optionKey === currentQuestion.answer) {
+    if (selectedAnswer === currentQuestion.answer) {
       setScore((prevScore) => prevScore + 1);
     } else {
-      setMistakes((prevMistakes) => [
-        ...prevMistakes,
-        {
-          index: currentQuestionIndex,
-          chosen: optionKey,
-          correct: currentQuestion.answer,
-        },
-      ]);
+      setMistakes((prevMistakes) => {
+        // Do not re-add mistake if already added (for e.g. Strict mode double render)
+        if (
+          prevMistakes.length > 0 &&
+          prevMistakes[prevMistakes.length - 1].index === currentQuestionIndex
+        ) {
+          return prevMistakes;
+        }
+
+        // Append mistake
+        return [
+          ...prevMistakes,
+          {
+            index: currentQuestionIndex,
+            chosen: selectedAnswer,
+            correct: currentQuestion.answer,
+          },
+        ];
+      });
     }
 
     setShowNextButton(true);
@@ -118,7 +129,7 @@ const App = () => {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setSelectedAnswer(null);
       setTimerActive(true);
-      setTimeRemaining(30);
+      setTimeRemaining(QUESTION_TIME);
       setShowNextButton(false);
     } else {
       // Quiz is complete
@@ -264,23 +275,19 @@ const App = () => {
                         />
                       </div>
                       <div className="flex flex-col p-2 m-2 border-1 border-red-600 bg-red-200 rounded-lg items-start">
-                        {mistake.chosen === null ? (
-                          <p className="font-bold text-sm text-red-900">
-                            No answer
-                          </p>
-                        ) : (
-                          <>
-                            <p className="font-bold text-sm text-red-900">
-                              Your answer:
-                            </p>
-                            <img
-                              src={`data:image/jpeg;base64,${
-                                mistakeQuestion.options[mistake.chosen]
-                              }`}
-                              alt={`Mistake`}
-                              className="m-4 max-w-[50vw]"
-                            />
-                          </>
+                        <p className="font-bold text-sm text-red-900">
+                          {mistake.chosen === null
+                            ? "Answer timed out"
+                            : "Your answer:"}
+                        </p>
+                        {mistake.chosen !== null && (
+                          <img
+                            src={`data:image/jpeg;base64,${
+                              mistakeQuestion.options[mistake.chosen]
+                            }`}
+                            alt={`Mistake`}
+                            className="m-4 max-w-[50vw]"
+                          />
                         )}
                       </div>
                       <div className="flex flex-col p-2 m-2 border-1 border-green-600 bg-green-200 rounded-lg items-start">
@@ -373,14 +380,14 @@ const App = () => {
           <div className="mb-4">
             <div
               className={`h-2 ${
-                timeRemaining > 15
+                timeRemaining > QUESTION_TIME / 2
                   ? "bg-green-500"
-                  : timeRemaining > 7
+                  : timeRemaining > QUESTION_TIME / 4
                     ? "bg-yellow-500"
                     : "bg-red-500"
               } bg-gray-200 rounded-full transition-all ease-linear duration-1000`}
               style={{
-                width: `${(timeRemaining / 30) * 100}%`,
+                width: `${(timeRemaining / QUESTION_TIME) * 100}%`,
               }}
             ></div>
           </div>
@@ -443,7 +450,7 @@ const App = () => {
           ) : (
             <div className="mt-8 flex justify-center">
               <button
-                onClick={() => handleAnswerSubmit(selectedAnswer)}
+                onClick={() => handleAnswerSubmit()}
                 disabled={selectedAnswer === null}
                 className={`${
                   selectedAnswer === null
