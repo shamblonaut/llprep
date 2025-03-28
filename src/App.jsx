@@ -63,9 +63,12 @@ const App = () => {
   const startOrderedQuiz = () => {
     setQuizMode("ordered");
     setSelectedQuestions(questions);
+    setSelectedAnswer(null);
     setMistakes([]);
     setShowNextButton(false);
     setQuizInProgress(true);
+    setTimerActive(true);
+    setTimeRemaining(30);
     setQuizComplete(false);
   };
 
@@ -79,10 +82,12 @@ const App = () => {
 
     setQuizMode("random");
     setSelectedQuestions(selectedSet);
+    setSelectedAnswer(null);
     setMistakes([]);
     setShowNextButton(false);
     setQuizInProgress(true);
     setTimerActive(true);
+    setTimeRemaining(30);
     setQuizComplete(false);
   };
 
@@ -254,16 +259,24 @@ const App = () => {
                         />
                       </div>
                       <div className="flex flex-col p-2 m-2 border-1 border-red-600 bg-red-200 rounded-lg items-start">
-                        <p className="font-bold text-sm text-red-900">
-                          Your answer:
-                        </p>
-                        <img
-                          src={`data:image/jpeg;base64,${
-                            mistakeQuestion.options[mistake.chosen]
-                          }`}
-                          alt={`Mistake`}
-                          className="m-4 max-w-[60vw]"
-                        />
+                        {mistake.chosen === null ? (
+                          <p className="font-bold text-sm text-red-900">
+                            No answer
+                          </p>
+                        ) : (
+                          <>
+                            <p className="font-bold text-sm text-red-900">
+                              Your answer:
+                            </p>
+                            <img
+                              src={`data:image/jpeg;base64,${
+                                mistakeQuestion.options[mistake.chosen]
+                              }`}
+                              alt={`Mistake`}
+                              className="m-4 max-w-[60vw]"
+                            />
+                          </>
+                        )}
                       </div>
                       <div className="flex flex-col p-2 m-2 border-1 border-green-600 bg-green-200 rounded-lg items-start">
                         <p className="font-bold text-sm text-green-900">
@@ -376,7 +389,6 @@ const App = () => {
               <button
                 key={key}
                 onClick={() => setSelectedAnswer(key)}
-                disabled={selectedAnswer !== null}
                 className={`flex items-center p-4 rounded-lg transition duration-300 shadow-sm
                                     ${
                                       key === selectedAnswer && timerActive
@@ -408,7 +420,13 @@ const App = () => {
                 onClick={moveToNextQuestion}
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center"
               >
-                Next Question <ArrowRight className="ml-2" />
+                {currentQuestionIndex + 1 < selectedQuestions.length ? (
+                  <>
+                    Next Question <ArrowRight className="ml-2" />
+                  </>
+                ) : (
+                  <>Complete Quiz</>
+                )}
               </button>
             </div>
           ) : (
@@ -416,7 +434,11 @@ const App = () => {
               <button
                 onClick={() => handleAnswerSubmit(selectedAnswer)}
                 disabled={selectedAnswer === null}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center"
+                className={`${
+                  selectedAnswer === null
+                    ? "bg-gray-400"
+                    : "bg-blue-600 hover:bg-blue-700"
+                } text-white px-6 py-3 rounded-lg transition duration-300 flex items-center`}
               >
                 Submit
               </button>
