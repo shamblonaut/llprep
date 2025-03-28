@@ -160,7 +160,7 @@ const App = () => {
   const currentQuestion = selectedQuestions[currentQuestionIndex];
 
   const renderLoadingScreen = () => (
-    <div className="flex flex-col items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-200 to-blue-600">
       <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
         <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
       </h1>
@@ -174,7 +174,7 @@ const App = () => {
   );
 
   const renderStartScreen = () => (
-    <div className="flex flex-col items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-200 to-blue-600">
       <h1 className="text-3xl font-bold mt-[30vh] text-gray-900 text-center flex items-center justify-center">
         <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
       </h1>
@@ -220,11 +220,11 @@ const App = () => {
   const renderQuizCompleteScreen = () => {
     let hasPassed = score >= selectedQuestions.length * 0.6;
     return (
-      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+      <div className="flex flex-col items-center min-h-screen pb-8 bg-gradient-to-br from-blue-200 to-blue-600">
         <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
           <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
         </h1>
-        <div className="bg-white p-8 m-8 rounded-xl shadow-2xl text-center max-w-[90vw] border-2 border-gray-200">
+        <div className="bg-white p-8 mt-auto mb-auto rounded-xl shadow-2xl text-center max-w-[90vw] border-2 border-gray-200">
           <h2 className="text-3xl font-bold mb-4 text-gray-900 flex items-center justify-center">
             <CircleCheckBig className="mr-2 text-green-600" /> Test Complete
           </h2>
@@ -326,7 +326,7 @@ const App = () => {
 
   const renderConfirmationAbort = () => {
     return (
-      <div className="flex flex-col items-center h-screen bg-gradient-to-br from-blue-100 to-blue-300">
+      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-blue-200 to-blue-600">
         <h1 className="text-3xl font-bold mt-[30vh] text-gray-900 text-center flex items-center justify-center">
           <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
         </h1>
@@ -359,7 +359,7 @@ const App = () => {
     const currentQuestion = selectedQuestions[currentQuestionIndex];
 
     return (
-      <div className="flex flex-col items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+      <div className="flex flex-col items-center min-h-screen pb-8 bg-gradient-to-br from-blue-200 to-blue-600">
         <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
           <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
         </h1>
