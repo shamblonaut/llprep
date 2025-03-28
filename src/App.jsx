@@ -149,8 +149,11 @@ const App = () => {
   const currentQuestion = selectedQuestions[currentQuestionIndex];
 
   const renderLoadingScreen = () => (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
-      <div className="flex flex-col text-center items-center">
+    <div className="flex flex-col items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+      <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
+        <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+      </h1>
+      <div className="flex flex-col m-auto text-center items-center">
         <div className="loader"></div>
         <p className="text-2xl font-semibold text-gray-800 m-16">
           Preparing LL Quiz...
@@ -160,12 +163,11 @@ const App = () => {
   );
 
   const renderStartScreen = () => (
-    <div className="flex justify-center items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
-      <div className="bg-white p-8 rounded-xl shadow-2xl w-96 border-2 border-gray-200 m-8">
-        <h1 className="text-3xl font-bold mb-6 text-gray-900 text-center flex items-center justify-center">
-          <Car className="mr-2 text-blue-600" /> LL Test Prep
-        </h1>
-
+    <div className="flex flex-col items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+      <h1 className="text-3xl font-bold mt-[30vh] text-gray-900 text-center flex items-center justify-center">
+        <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+      </h1>
+      <div className="bg-white p-8 mt-[5vh] rounded-xl shadow-2xl max-w-[90vw] border-2 border-gray-200 m-8">
         <div className="space-y-4">
           <button
             onClick={startOrderedQuiz}
@@ -207,7 +209,10 @@ const App = () => {
   const renderQuizCompleteScreen = () => {
     let hasPassed = score >= selectedQuestions.length * 0.6;
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+      <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+        <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
+          <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+        </h1>
         <div className="bg-white p-8 m-8 rounded-xl shadow-2xl text-center max-w-[90vw] border-2 border-gray-200">
           <h2 className="text-3xl font-bold mb-4 text-gray-900 flex items-center justify-center">
             <CircleCheckBig className="mr-2 text-green-600" /> Test Complete
@@ -273,7 +278,7 @@ const App = () => {
                                 mistakeQuestion.options[mistake.chosen]
                               }`}
                               alt={`Mistake`}
-                              className="m-4 max-w-[60vw]"
+                              className="m-4 max-w-[50vw]"
                             />
                           </>
                         )}
@@ -287,7 +292,7 @@ const App = () => {
                             mistakeQuestion.options[mistake.correct]
                           }`}
                           alt={`Answer`}
-                          className="m-4 max-w-[60vw]"
+                          className="m-4 max-w-[50vw]"
                         />
                       </div>
                     </div>
@@ -314,8 +319,11 @@ const App = () => {
 
   const renderConfirmationAbort = () => {
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-blue-100 to-blue-300">
-        <div className="bg-white p-8 rounded-xl shadow-2xl text-center w-96 max-w-[90vw]">
+      <div className="flex flex-col items-center h-screen bg-gradient-to-br from-blue-100 to-blue-300">
+        <h1 className="text-3xl font-bold mt-[30vh] text-gray-900 text-center flex items-center justify-center">
+          <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+        </h1>
+        <div className="bg-white p-8 mt-[5vh] rounded-xl shadow-2xl text-center max-w-[90vw]">
           <h2 className="text-2xl font-bold mb-4 text-red-700">Abort Quiz?</h2>
           <p className="mb-6 text-gray-700">
             Are you sure you want to end the quiz?
@@ -344,7 +352,10 @@ const App = () => {
     const currentQuestion = selectedQuestions[currentQuestionIndex];
 
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+      <div className="flex flex-col items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+        <h1 className="text-3xl font-bold m-8 text-gray-900 text-center flex items-center justify-center">
+          <img className="mr-2" src="/racing-car.svg" /> LL Test Prep
+        </h1>
         <div className="bg-white p-4 rounded-xl shadow-2xl max-w-[90vw] border-2 border-gray-200">
           <div className="grid grid-cols-3 mb-4">
             <div className="text-green-600 font-bold">Score: {score}</div>
@@ -365,8 +376,8 @@ const App = () => {
                 timeRemaining > 15
                   ? "bg-green-500"
                   : timeRemaining > 7
-                  ? "bg-yellow-500"
-                  : "bg-red-500"
+                    ? "bg-yellow-500"
+                    : "bg-red-500"
               } bg-gray-200 rounded-full transition-all ease-linear duration-1000`}
               style={{
                 width: `${(timeRemaining / 30) * 100}%`,
@@ -394,12 +405,12 @@ const App = () => {
                                       key === selectedAnswer && timerActive
                                         ? "border-1 border-gray-600 bg-gray-300 hover:bg-gray-400"
                                         : timerActive
-                                        ? "border-1 border-gray-600 hover:bg-gray-200"
-                                        : key === currentQuestion.answer
-                                        ? "border-1 border-green-600 bg-green-200 text-green-900"
-                                        : selectedAnswer === key
-                                        ? "border-1 border-red-600 bg-red-200 text-red-900"
-                                        : "bg-gray-100"
+                                          ? "border-1 border-gray-600 hover:bg-gray-200"
+                                          : key === currentQuestion.answer
+                                            ? "border-1 border-green-600 bg-green-200 text-green-900"
+                                            : selectedAnswer === key
+                                              ? "border-1 border-red-600 bg-red-200 text-red-900"
+                                              : "bg-gray-100"
                                     }`}
               >
                 {key}.
