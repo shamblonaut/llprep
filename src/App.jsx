@@ -194,7 +194,7 @@ const App = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Shuffle className="mr-2 text-blue-600" />
-              <span className="text-gray-800 ml-2">Random Questions</span>
+              <span className="text-gray-800 m-4">Random Questions</span>
               <input
                 type="number"
                 value={customQuestionCount}
