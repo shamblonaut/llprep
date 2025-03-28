@@ -18,6 +18,7 @@ const App = () => {
   const [selectedQuestions, setSelectedQuestions] = useState([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [score, setScore] = useState(0);
+  const [mistakes, setMistakes] = useState([]);
   const [customQuestionCount, setCustomQuestionCount] = useState(20);
   const [quizComplete, setQuizComplete] = useState(false);
   const [showConfirmAbort, setShowConfirmAbort] = useState(false);
@@ -48,7 +49,8 @@ const App = () => {
           if (prev <= 1) {
             clearInterval(timer);
             handleAnswerSubmit(null);
-            return 0;
+            setTimerActive(false);
+            return 30;
           }
           return prev - 1;
         });
@@ -61,10 +63,9 @@ const App = () => {
   const startOrderedQuiz = () => {
     setQuizMode("ordered");
     setSelectedQuestions(questions);
+    setMistakes([]);
+    setShowNextButton(false);
     setQuizInProgress(true);
-    setTimerActive(true);
-    setCurrentQuestionIndex(0);
-    setScore(0);
     setQuizComplete(false);
   };
 
@@ -78,10 +79,10 @@ const App = () => {
 
     setQuizMode("random");
     setSelectedQuestions(selectedSet);
+    setMistakes([]);
+    setShowNextButton(false);
     setQuizInProgress(true);
     setTimerActive(true);
-    setCurrentQuestionIndex(0);
-    setScore(0);
     setQuizComplete(false);
   };
 
@@ -93,6 +94,15 @@ const App = () => {
     const currentQuestion = selectedQuestions[currentQuestionIndex];
     if (optionKey === currentQuestion.answer) {
       setScore((prevScore) => prevScore + 1);
+    } else {
+      setMistakes((prevMistakes) => [
+        ...prevMistakes,
+        {
+          index: currentQuestionIndex,
+          chosen: optionKey,
+          correct: currentQuestion.answer,
+        },
+      ]);
     }
 
     setShowNextButton(true);
@@ -128,6 +138,7 @@ const App = () => {
     setSelectedAnswer(null);
     setQuizComplete(false);
     setScore(0);
+    setMistakes([]);
   };
 
   const currentQuestion = selectedQuestions[currentQuestionIndex];
@@ -191,8 +202,8 @@ const App = () => {
   const renderQuizCompleteScreen = () => {
     let hasPassed = score >= selectedQuestions.length * 0.6;
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-gray-100 to-gray-300">
-        <div className="bg-white p-8 rounded-xl shadow-2xl text-center w-96 max-w-[90vw] border-2 border-gray-200">
+      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-300">
+        <div className="bg-white p-8 m-8 rounded-xl shadow-2xl text-center max-w-[90vw] border-2 border-gray-200">
           <h2 className="text-3xl font-bold mb-4 text-gray-900 flex items-center justify-center">
             <CircleCheckBig className="mr-2 text-green-600" /> Test Complete
           </h2>
@@ -218,6 +229,65 @@ const App = () => {
                 : "Keep studying. You're getting there."}
             </span>
           </p>
+
+          {mistakes.length > 0 ? (
+            <div className="mt-6 border-t pt-4">
+              <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                Review Your Mistakes
+              </h3>
+              <ol className="flex flex-col">
+                {mistakes.map((mistake) => {
+                  const mistakeQuestion = selectedQuestions[mistake.index];
+                  return (
+                    <div
+                      key={mistake.index}
+                      className="mb-8 flex flex-col rounded-lg border"
+                    >
+                      <div className="flex flex-col m-2 items-center">
+                        <p className="p-4 font-bold">
+                          Question {mistake.index + 1}
+                        </p>
+                        <img
+                          src={`data:image/jpeg;base64,${mistakeQuestion.question}`}
+                          alt="Question"
+                          className="max-w-[60vw]"
+                        />
+                      </div>
+                      <div className="flex flex-col p-2 m-2 border-1 border-red-600 bg-red-200 rounded-lg items-start">
+                        <p className="font-bold text-sm text-red-900">
+                          Your answer:
+                        </p>
+                        <img
+                          src={`data:image/jpeg;base64,${
+                            mistakeQuestion.options[mistake.chosen]
+                          }`}
+                          alt={`Mistake`}
+                          className="m-4 max-w-[60vw]"
+                        />
+                      </div>
+                      <div className="flex flex-col p-2 m-2 border-1 border-green-600 bg-green-200 rounded-lg items-start">
+                        <p className="font-bold text-sm text-green-900">
+                          Correct answer:
+                        </p>
+                        <img
+                          src={`data:image/jpeg;base64,${
+                            mistakeQuestion.options[mistake.correct]
+                          }`}
+                          alt={`Answer`}
+                          className="m-4 max-w-[60vw]"
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </ol>
+            </div>
+          ) : (
+            <p className="m-16 text-green-600 text-center">
+              Congratulations! No mistakes in this round.
+            </p>
+          )}
+
           <button
             onClick={resetQuiz}
             className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300"
@@ -282,8 +352,8 @@ const App = () => {
                 timeRemaining > 15
                   ? "bg-green-500"
                   : timeRemaining > 7
-                    ? "bg-yellow-500"
-                    : "bg-red-500"
+                  ? "bg-yellow-500"
+                  : "bg-red-500"
               } bg-gray-200 rounded-full transition-all ease-linear duration-1000`}
               style={{
                 width: `${(timeRemaining / 30) * 100}%`,
@@ -310,14 +380,14 @@ const App = () => {
                 className={`flex items-center p-4 rounded-lg transition duration-300 shadow-sm
                                     ${
                                       key === selectedAnswer && timerActive
-                                        ? "border-1 border-gray-600 bg-gray-300 hover:bg-gray-400 text-gray-800"
+                                        ? "border-1 border-gray-600 bg-gray-300 hover:bg-gray-400"
                                         : timerActive
-                                          ? "border-1 border-gray-600 hover:bg-gray-200 text-gray-800"
-                                          : key === currentQuestion.answer
-                                            ? "bg-green-200 text-green-900"
-                                            : selectedAnswer === key
-                                              ? "bg-red-200 text-red-900"
-                                              : "bg-gray-100 text-gray-800"
+                                        ? "border-1 border-gray-600 hover:bg-gray-200"
+                                        : key === currentQuestion.answer
+                                        ? "border-1 border-green-600 bg-green-200 text-green-900"
+                                        : selectedAnswer === key
+                                        ? "border-1 border-red-600 bg-red-200 text-red-900"
+                                        : "bg-gray-100"
                                     }`}
               >
                 {key}.
